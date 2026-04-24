@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAPIDemo.Exceptions;
 using WebAPIDemo.Models;
+using WebAPIDemo.Services.Abstracts;
+using WebAPIDemo.Services.Implements;
 
 namespace WebAPIDemo.Controllers;
 
@@ -7,51 +10,58 @@ namespace WebAPIDemo.Controllers;
 [Route("api/products")]
 public class ProductsController : ControllerBase
 {
-    private static List<Product> products = new List<Product>
+    private readonly IProductService _productService; // Dependency Injection
+
+    /// <summary>
+    /// Constructor with dependency injection of IProductService. The actual implementation (ProductService) will be provided by the DI container at runtime.
+    /// Đang áp dụng SOLID - Dependency Inversion Principle (DIP) khi controller phụ thuộc vào abstraction (interface) thay vì implementation cụ thể. Điều này giúp tăng tính linh hoạt và khả năng mở rộng của ứng dụng. Nếu sau này muốn thay đổi cách quản lý sản phẩm, chỉ cần tạo một class mới implement IProductService mà không cần sửa code trong controller.
+    /// </summary>
+    /// <param name="productService"></param>
+    public ProductsController(IProductService productService) // Dependency Injection
     {
-        new Product { Id = 1, Name = "Banh mi", Price = 15000 },
-        new Product { Id = 2, Name = "Sua tuoi", Price = 12000 },
-        new Product { Id = 3, Name = "Ca phe", Price = 20000 }
-    };
+        _productService = productService;
+    }
 
     [HttpGet("get-all")]
     public ActionResult<IEnumerable<Product>> GetAll()
     {
-        return Ok(products);
+        return Ok(_productService.GetAll());
     }
 
     [HttpGet("{id}")]
     public ActionResult<Product> GetById(int id)
     {
-        var product = products.FirstOrDefault(p => p.Id == id);
+        var product = _productService.GetById(id);
         if (product == null) return NotFound();
-        return Ok(product);
+        return Ok();
     }
 
     [HttpPost]
     public ActionResult<Product> Create(Product product)
     {
-        product.Id = products.Count > 0 ? products.Max(p => p.Id) + 1 : 1;
-        products.Add(product);
+        var createdProduct = _productService.Create(product);
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
 
     [HttpPut("{id}")]
     public ActionResult<Product> Update(int id, Product updatedProduct)
     {
-        var product = products.FirstOrDefault(p => p.Id == id);
+        var product = _productService.Update(id, updatedProduct);
         if (product == null) return NotFound();
-        product.Name = updatedProduct.Name;
-        product.Price = updatedProduct.Price;
         return Ok(product);
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var product = products.FirstOrDefault(p => p.Id == id);
-        if (product == null) return NotFound();
-        products.Remove(product);
+        try
+        {
+            _productService.Delete(id);
+        }
+        catch (UserFriendlyException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
         return NoContent();
     }
 }

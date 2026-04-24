@@ -1,0 +1,38 @@
+# .gitignore for ASP.NET Core Web API
+# Ignore build outputs
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Others
+*.dbmdl
+*.db
+*.pdb
+*.cache
+*.sdf
+*.suo
+*.userprefs
+*.vspscc
+*.vssscc
+*.ncb
+*.sbr
+*.scc
+
+# Rider
+.idea/
+*.sln.iml
