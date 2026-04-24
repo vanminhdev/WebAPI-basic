@@ -29,7 +29,10 @@ public class ProductService : IProductService
         var product = _dbContext.Products.FirstOrDefault(p => p.Id == id);
         if (product == null)
         {
-            throw new UserFriendlyException($"Product with id {id} not found.");
+            throw new UserFriendlyException(
+                ErrorCodes.ProductNotFound,
+                $"Product with id {id} not found."
+            );
         }
         _dbContext.Products.Remove(product);
     }
@@ -47,7 +50,8 @@ public class ProductService : IProductService
     public Product Update(int id, Product updatedProduct)
     {
         var product = _dbContext.Products.FirstOrDefault(p => p.Id == id);
-        if (product == null) return null;
+        if (product == null)
+            return null;
         product.Name = updatedProduct.Name;
         product.Price = updatedProduct.Price;
         return product;

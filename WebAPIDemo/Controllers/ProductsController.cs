@@ -60,7 +60,7 @@ public class ProductsController : ControllerBase
         }
         catch (UserFriendlyException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound(new { errorCode = ex.ErrorCode, message = ex.Message });
         }
         return NoContent();
     }
