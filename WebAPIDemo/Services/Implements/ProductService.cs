@@ -1,5 +1,6 @@
 using System;
 using WebAPIDemo.Dtos;
+using WebAPIDemo.Dtos.Products;
 using WebAPIDemo.Exceptions;
 using WebAPIDemo.Infrastructures;
 using WebAPIDemo.Models;
@@ -38,15 +39,17 @@ public class ProductService : IProductService
         _dbContext.Products.Remove(product);
     }
 
-    public PagingDto<Product> GetAll(FilterDto filter)
+    public PagingDto<Product> GetAll(FilterProductDto filter)
     {
         var query = _dbContext.Products.Where(p =>
             string.IsNullOrEmpty(filter.Keyword) || p.Name.Contains(filter.Keyword)
+            && (!filter.MinPrice.HasValue || p.Price >= filter.MinPrice.Value)
+            && (filter.MaxPrice == null || p.Price <= filter.MaxPrice.Value)
         );
 
         var totalItems = query.Count();
 
-        var items = query.Skip((filter.PageIndex - 1) * filter.PageSize)
+        var items = query.Skip(filter.GetSkipCount())
             .Take(filter.PageSize)
             .ToList();
 

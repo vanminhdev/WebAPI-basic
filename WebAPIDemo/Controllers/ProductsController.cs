@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPIDemo.Dtos;
+using WebAPIDemo.Dtos.Products;
 using WebAPIDemo.Exceptions;
 using WebAPIDemo.Models;
 using WebAPIDemo.Services.Abstracts;
@@ -24,7 +25,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("get-all")]
-    public ActionResult<PagingDto<Product>> GetAll([FromQuery] FilterDto filter)
+    public ActionResult<PagingDto<Product>> GetAll([FromQuery] FilterProductDto filter)
     {
         return Ok(_productService.GetAll(filter));
     }

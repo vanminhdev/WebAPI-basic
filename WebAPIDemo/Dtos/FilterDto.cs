@@ -13,4 +13,9 @@ public class FilterDto
 
     [FromQuery(Name = "keyword")]
     public string Keyword { get; set; }
+
+    public int GetSkipCount()
+    {
+        return (PageIndex - 1) * PageSize;
+    }
 }

@@ -1,5 +1,6 @@
 using System;
 using WebAPIDemo.Dtos;
+using WebAPIDemo.Dtos.Products;
 using WebAPIDemo.Models;
 using WebAPIDemo.Services.Abstracts;
 
@@ -17,7 +18,7 @@ public class ProductService2 : IProductService
         throw new NotImplementedException();
     }
 
-    public PagingDto<Product> GetAll(FilterDto filter)
+    public PagingDto<Product> GetAll(FilterProductDto filter)
     {
         throw new NotImplementedException();
     }
