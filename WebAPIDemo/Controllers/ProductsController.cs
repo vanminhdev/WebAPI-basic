@@ -24,7 +24,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("get-all")]
-    public ActionResult<IEnumerable<Product>> GetAll([FromQuery] FilterDto filter)
+    public ActionResult<PagingDto<Product>> GetAll([FromQuery] FilterDto filter)
     {
         return Ok(_productService.GetAll(filter));
     }

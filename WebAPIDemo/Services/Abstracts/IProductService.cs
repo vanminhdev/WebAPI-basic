@@ -6,7 +6,7 @@ namespace WebAPIDemo.Services.Abstracts;
 
 public interface IProductService
 {
-    public List<Product> GetAll(FilterDto filter);
+    public PagingDto<Product> GetAll(FilterDto filter);
     public Product GetById(int id);
     public Product Create(Product product);
     public Product Update(int id, Product updatedProduct);

@@ -17,7 +17,7 @@ public class ProductService2 : IProductService
         throw new NotImplementedException();
     }
 
-    public List<Product> GetAll(FilterDto filter)
+    public PagingDto<Product> GetAll(FilterDto filter)
     {
         throw new NotImplementedException();
     }

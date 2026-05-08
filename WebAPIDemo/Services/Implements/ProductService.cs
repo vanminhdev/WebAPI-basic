@@ -38,7 +38,7 @@ public class ProductService : IProductService
         _dbContext.Products.Remove(product);
     }
 
-    public List<Product> GetAll(FilterDto filter)
+    public PagingDto<Product> GetAll(FilterDto filter)
     {
         var query = _dbContext.Products.Where(p =>
             string.IsNullOrEmpty(filter.Keyword) || p.Name.Contains(filter.Keyword)
@@ -46,9 +46,15 @@ public class ProductService : IProductService
 
         var totalItems = query.Count();
 
-        return query.Skip((filter.PageIndex - 1) * filter.PageSize)
+        var items = query.Skip((filter.PageIndex - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .ToList();
+
+        return new PagingDto<Product>
+        {
+            Items = items,
+            TotalItems = totalItems
+        };
     }
 
     public Product GetById(int id)
