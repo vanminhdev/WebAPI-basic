@@ -13,7 +13,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddAuthorization();
-        builder.Services.AddScoped<IProductService, ProductService2>();
+        builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<INotiService, NotiService>();
         // Đăng ký ApplicationDbContext với DI container. Sử dụng AddSingleton vì đây là một in-memory database đơn giản, không cần tạo nhiều instance.
         builder.Services.AddSingleton<IApplicationDbContext, ApplicationDbContext>();

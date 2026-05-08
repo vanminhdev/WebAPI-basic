@@ -36,3 +36,5 @@ Thumbs.db
 # Rider
 .idea/
 *.sln.iml
+
+.vs/

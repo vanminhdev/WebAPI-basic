@@ -1,4 +1,5 @@
 using System;
+using WebAPIDemo.Dtos;
 using WebAPIDemo.Exceptions;
 using WebAPIDemo.Infrastructures;
 using WebAPIDemo.Models;
@@ -37,9 +38,17 @@ public class ProductService : IProductService
         _dbContext.Products.Remove(product);
     }
 
-    public List<Product> GetAll()
+    public List<Product> GetAll(FilterDto filter)
     {
-        return _dbContext.Products;
+        var query = _dbContext.Products.Where(p =>
+            string.IsNullOrEmpty(filter.Keyword) || p.Name.Contains(filter.Keyword)
+        );
+
+        var totalItems = query.Count();
+
+        return query.Skip((filter.PageIndex - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToList();
     }
 
     public Product GetById(int id)

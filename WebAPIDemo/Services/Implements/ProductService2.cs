@@ -1,4 +1,5 @@
 using System;
+using WebAPIDemo.Dtos;
 using WebAPIDemo.Models;
 using WebAPIDemo.Services.Abstracts;
 
@@ -16,7 +17,7 @@ public class ProductService2 : IProductService
         throw new NotImplementedException();
     }
 
-    public List<Product> GetAll()
+    public List<Product> GetAll(FilterDto filter)
     {
         throw new NotImplementedException();
     }
